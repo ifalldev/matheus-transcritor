@@ -1,0 +1,10 @@
+# Ignorar arquivos grandes e temporários
+*.mp3
+*.wav
+*.ogg
+*.flac
+transcricoes/
+__pycache__/
+*.srt
+*.vtt
+*.txt

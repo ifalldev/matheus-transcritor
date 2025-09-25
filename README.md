@@ -1,4 +1,4 @@
-# 🎙️ Whisper Projeto — Transcrição de Áudios com Docker
+# 🎙️ Matheus — Transcrição de Áudios com Docker
 
 Este projeto usa o [Whisper](https://github.com/openai/whisper) (open-source, gratuito) em contêiner Docker para **transcrever áudios em texto** e gerar arquivos de legenda (`.txt`, `.srt`, `.vtt`).  
 Tudo roda **localmente**, sem custo de API.

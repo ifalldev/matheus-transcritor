@@ -7,6 +7,10 @@ set -euo pipefail
 MODEL="${1:-medium}"
 shift || true
 
+# Cria a pasta de saída se não existir
+OUTDIR="transcricoes"
+mkdir -p "$OUTDIR"
+
 if [ "$#" -eq 0 ]; then
   echo "Uso: $0 <modelo> <arquivos.mp3...>"
   echo "Ex.: $0 medium \"Stories 10x 1 -logica das sequencias.mp3\" \"Stories 10x 2 - engenharia social 1.mp3\""
@@ -14,9 +18,13 @@ if [ "$#" -eq 0 ]; then
 fi
 
 for f in "$@"; do
+  base=$(basename "$f")
+  name="${base%.*}"
+
   echo -e "\n==> Transcrevendo: $f"
-  whisper "$f" --model "$MODEL" --language pt
-  echo "✅ Concluído: $f"
+  whisper "$f" --model "$MODEL" --language pt --output_dir "$OUTDIR"
+
+  echo "✅ Concluído: $f → arquivos salvos em $OUTDIR/$name.*"
 done
 
-echo -e "\n✨ Pronto! Foram gerados .txt, .srt e .vtt para cada arquivo."
+echo -e "\n✨ Pronto! Todas as transcrições estão em $OUTDIR/"

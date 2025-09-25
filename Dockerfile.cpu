@@ -1,0 +1,22 @@
+# Dockerfile.cpu
+FROM python:3.11-slim
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+# ffmpeg é necessário para o Whisper
+RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg && \
+    rm -rf /var/lib/apt/lists/*
+
+# Instala Whisper open-source
+RUN pip install --no-cache-dir git+https://github.com/openai/whisper.git
+
+WORKDIR /work
+
+# Use essa pasta como cache dos modelos (mapeie com -v)
+ENV XDG_CACHE_HOME=/root/.cache
+
+ENTRYPOINT ["whisper"]
+CMD ["--help"]

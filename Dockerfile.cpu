@@ -6,8 +6,8 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
-# ffmpeg é necessário para o Whisper
-RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg && \
+# ffmpeg e git são necessários para o Whisper
+RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg git && \
     rm -rf /var/lib/apt/lists/*
 
 # Instala Whisper open-source

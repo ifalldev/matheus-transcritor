@@ -5,17 +5,21 @@ ENV DEBIAN_FRONTEND=noninteractive \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1
 
+# Dependências do Whisper + PyTorch
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg git libopenblas-dev && \
     rm -rf /var/lib/apt/lists/*
 
-# Instalar versão ARM do PyTorch
+# PyTorch ARM (necessário para M1/M2/M3)
 RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
 
-# Instalar Whisper
+# Whisper
 RUN pip install --no-cache-dir git+https://github.com/openai/whisper.git
 
 WORKDIR /work
+
+# Copia o script Python para dentro da imagem
+COPY transcrever.py .
 
 ENTRYPOINT ["/bin/bash"]
 CMD []

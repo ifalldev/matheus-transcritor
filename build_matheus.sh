@@ -1,0 +1,1 @@
+docker build -t matheus -f Dockerfile.cpu .

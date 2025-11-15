@@ -1,22 +1,21 @@
-# Dockerfile.cpu
-FROM python:3.11-slim
+FROM --platform=linux/arm64 python:3.11-slim
 
 ENV DEBIAN_FRONTEND=noninteractive \
-    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
+    PIP_DISABLE_PIP_VERSION_CHECK=1
 
-# ffmpeg e git são necessários para o Whisper
-RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg git && \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ffmpeg git libopenblas-dev && \
     rm -rf /var/lib/apt/lists/*
 
-# Instala Whisper open-source
+# Instalar versão ARM do PyTorch
+RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
+
+# Instalar Whisper
 RUN pip install --no-cache-dir git+https://github.com/openai/whisper.git
 
 WORKDIR /work
 
-# Use essa pasta como cache dos modelos (mapeie com -v)
-ENV XDG_CACHE_HOME=/root/.cache
-
-ENTRYPOINT ["whisper"]
-CMD ["--help"]
+ENTRYPOINT ["/bin/bash"]
+CMD []

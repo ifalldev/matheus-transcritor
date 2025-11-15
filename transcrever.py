@@ -15,6 +15,19 @@ def barra_progresso(percent, width=30):
     left = width - done
     return f"[{'#' * done}{'-' * left}] {int(percent*100)}%"
 
+def formatar_duracao(segundos):
+    """Formata duração em segundos para formato legível (horas, minutos, segundos)"""
+    horas = int(segundos // 3600)
+    minutos = int((segundos % 3600) // 60)
+    segs = int(segundos % 60)
+    
+    if horas > 0:
+        return f"{horas}h {minutos}m {segs}s"
+    elif minutos > 0:
+        return f"{minutos}m {segs}s"
+    else:
+        return f"{segs}s"
+
 def duracao_audio(path):
     cmd = [
         "ffprobe", "-v", "quiet", "-print_format", "json",
@@ -35,7 +48,7 @@ def transcrever_arquivo(args):
 
     # obter duração do áudio
     duracao = duracao_audio(caminho)
-    print(f"⏳ {nome}: duração {duracao:.2f}s")
+    print(f"⏳ {nome}: duração {formatar_duracao(duracao)}")
 
     # tempo inicial para barra de progresso
     inicio = time.time()

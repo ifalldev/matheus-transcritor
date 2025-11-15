@@ -8,3 +8,4 @@ __pycache__/
 *.srt
 *.vtt
 *.txt
+.DS_Store
